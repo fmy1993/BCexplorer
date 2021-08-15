@@ -13,10 +13,10 @@ import (
 	"net/http"
 	"strings"
 
+	v1 "github.com/fmy1993/BCexplorer/application/routers/api/v1"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	v1 "github.com/togettoyou/blockchain-real-estate/application/routers/api/v1"
 )
 
 // InitRouter 初始化路由信息

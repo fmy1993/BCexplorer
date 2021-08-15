@@ -20,7 +20,7 @@
           <el-dropdown-item>
             余额: ￥{{ balance }} 元
           </el-dropdown-item>
-          <a target="_blank" href="https://github.com/togettoyou/blockchain-real-estate">
+          <a target="_blank" href="https://github.com/fmy1993/BCexplorer">
             <el-dropdown-item>项目地址</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">

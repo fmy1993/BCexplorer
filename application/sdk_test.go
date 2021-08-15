@@ -2,7 +2,7 @@ package main_test
 
 import (
 	"fmt"
-	"github.com/togettoyou/blockchain-real-estate/application/blockchain"
+	"github.com/fmy1993/BCexplorer/application/blockchain"
 	"testing"
 )
 

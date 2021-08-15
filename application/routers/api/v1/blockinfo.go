@@ -11,8 +11,8 @@ import (
 	"strconv"
 	"unicode/utf8"
 
-	bc "github.com/fmy1993/blockchain-real-estate/application/blockchain"
-	"github.com/fmy1993/blockchain-real-estate/application/pkg/app"
+	bc "github.com/fmy1993/BCexplorer/application/blockchain"
+	"github.com/fmy1993/BCexplorer/application/pkg/app"
 	"github.com/gin-gonic/gin"
 )
 

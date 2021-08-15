@@ -1,4 +1,4 @@
-module github.com/togettoyou/blockchain-real-estate/chaincode/blockchain-real-estate
+module github.com/fmy1993/BCexplorer/chaincode/blockchain-real-estate
 
 go 1.14
 
