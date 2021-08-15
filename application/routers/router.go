@@ -1,13 +1,22 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: fmy1993
+ * @Date: 2021-08-15 09:04:19
+ * @LastEditors: fmy1993
+ * @LastEditTime: 2021-08-15 09:24:19
+ */
 package routers
 
 import (
 	"fmt"
+	"net/http"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	v1 "github.com/togettoyou/blockchain-real-estate/application/routers/api/v1"
-	"net/http"
-	"strings"
 )
 
 // InitRouter 初始化路由信息
@@ -33,6 +42,8 @@ func InitRouter() *gin.Engine {
 		apiV1.POST("/queryDonatingList", v1.QueryDonatingList)
 		apiV1.POST("/queryDonatingListByGrantee", v1.QueryDonatingListByGrantee)
 		apiV1.POST("/updateDonating", v1.UpdateDonating)
+		apiV1.POST("/addCrop", v1.AddCrop)
+		apiV1.POST("/updateCrop", v1.UpdateCrop)
 	}
 	// 静态文件路由
 	r.StaticFS("/web", http.Dir("./dist/"))
