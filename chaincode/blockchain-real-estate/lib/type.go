@@ -1,4 +1,19 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: fmy1993
+ * @Date: 2021-08-15 15:15:40
+ * @LastEditors: fmy1993
+ * @LastEditTime: 2021-08-15 16:27:27
+ */
 package lib
+
+//上链接口结构体
+type Crop struct {
+	DataType string `json:"datatype"` // add column here
+	Id       string `json:"id"`
+	HashInfo string `json:"hashinfo"`
+}
 
 // Account 账户，虚拟管理员和若干业主账号
 type Account struct {
