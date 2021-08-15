@@ -3,12 +3,13 @@ package blockchain
 import (
 	"fmt"
 
+	"github.com/hyperledger/fabric-protos-go/common" //用于获取区块信息的包
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/ledger"
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
-	"github.com/hyperledger/fabric/protos/common"
+	//"github.com/hyperledger/fabric/protos/common"
 )
 
 // 配置信息
