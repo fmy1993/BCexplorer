@@ -1,9 +1,14 @@
 package blockchain
 
 import (
+	"fmt"
+
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
+	"github.com/hyperledger/fabric-sdk-go/pkg/client/ledger"
+	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
+	"github.com/hyperledger/fabric/protos/common"
 )
 
 // 配置信息
@@ -66,4 +71,46 @@ func ChannelQuery(fcn string, args [][]byte) (channel.Response, error) {
 	}
 	//返回链码执行后的结果
 	return resp, nil
+}
+
+//查询账本信息
+func ChannelQueryBlockinfo() (BciResp *fab.BlockchainInfoResponse, err error) {
+	// 	func New(channelProvider context.ChannelProvider, opts ...ClientOption) (*Client, error)
+	// New returns a ledger client instance. A ledger client instance provides a handler
+	// to query various info on specified channel. An application that requires interaction
+	// with multiple channels should create a separate instance of the ledger client
+	// for each channel. Ledger client supports specific queries only.
+	// ctx := SDK.ChannelContext(ChannelName, fabsdk.WithOrg(Org), fabsdk.WithUser(User))
+	// cli, err := channel.New(ctx)
+	c, err := ledger.New(SDK.ChannelContext(ChannelName, fabsdk.WithOrg(Org), fabsdk.WithUser(User)))
+	if err != nil {
+		fmt.Println("failed to create client")
+	}
+
+	bci, err := c.QueryInfo()
+	if err != nil {
+		fmt.Printf("failed to query for blockchain info: %s\n", err)
+	}
+	return bci, nil
+}
+
+func QueryBlockinfoByBlockHeight(BlockHeight uint64) (BlockResp *common.Block, err error) {
+	// 	func New(channelProvider context.ChannelProvider, opts ...ClientOption) (*Client, error)
+	// New returns a ledger client instance. A ledger client instance provides a handler
+	// to query various info on specified channel. An application that requires interaction
+	// with multiple channels should create a separate instance of the ledger client
+	// for each channel. Ledger client supports specific queries only.
+	// ctx := SDK.ChannelContext(ChannelName, fabsdk.WithOrg(Org), fabsdk.WithUser(User))
+	// cli, err := channel.New(ctx)
+	c, err := ledger.New(SDK.ChannelContext(ChannelName, fabsdk.WithOrg(Org), fabsdk.WithUser(User)))
+	if err != nil {
+		fmt.Println("failed to create client")
+	}
+	//BlockHeightInt64 := uint64(BlockHeight)
+
+	block, err := c.QueryBlock(BlockHeight)
+	if err != nil {
+		fmt.Printf("failed to query for blockchain info: %s\n", err)
+	}
+	return block, nil
 }
