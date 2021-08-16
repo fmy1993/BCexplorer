@@ -4,7 +4,7 @@
  * @Author: fmy1993
  * @Date: 2021-08-15 15:15:40
  * @LastEditors: fmy1993
- * @LastEditTime: 2021-08-15 16:27:27
+ * @LastEditTime: 2021-08-15 16:32:08
  */
 package lib
 
@@ -95,6 +95,7 @@ type DonatingGrantee struct {
 }
 
 const (
+	CropKey            = "crop-key"
 	AccountKey         = "account-key"
 	RealEstateKey      = "real-estate-key"
 	SellingKey         = "selling-key"
