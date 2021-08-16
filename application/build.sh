@@ -5,7 +5,7 @@
  # @Author: fmy1993
  # @Date: 2021-08-15 15:15:40
  # @LastEditors: fmy1993
- # @LastEditTime: 2021-08-15 17:17:04
+ # @LastEditTime: 2021-08-15 20:01:42
 ### 
 
 echo "运行单元测试，检查区块链网络是否连接成功，需要有go环境，若无可忽略"
@@ -39,4 +39,5 @@ echo "三、运行编译容器"
 docker run -it -d --name blockchain-real-estate-application togettoyou/blockchain-real-estate-application:v1
 
 echo "四、拷贝容器中编译后的二进制可执行文件"
+# 生成一个可执行文件 app
 docker cp blockchain-real-estate-application:/root/application/app ./

@@ -1,4 +1,12 @@
 #!/bin/bash
+###
+ # @Descripttion: 
+ # @version: 
+ # @Author: fmy1993
+ # @Date: 2021-08-15 11:57:49
+ # @LastEditors: fmy1993
+ # @LastEditTime: 2021-08-16 08:34:08
+### 
 
 # 根据需求保留，这里相当于使用fabric-samples_v1.4.7中的bin
 if [[ `uname` == 'Darwin' ]]; then
@@ -7,6 +15,7 @@ if [[ `uname` == 'Darwin' ]]; then
 fi
 if [[ `uname` == 'Linux' ]]; then
     echo "Linux"
+    # 引入环境变量
     export PATH=${PWD}/fabric/linux/bin:${PWD}:$PATH
 fi
 
@@ -31,6 +40,7 @@ echo "三、生成通道的TX文件(创建创世交易)"
 configtxgen -profile TwoOrgChannel -outputCreateChannelTx ./config/assetschannel.tx -channelID assetschannel
 
 echo "四、创建通道"
+# 通道名是 -c 以参数名给出的，与tx文件本身的路径不同
 docker exec cli peer channel create -o orderer.blockchainrealestate.com:7050 -c assetschannel -f /etc/hyperledger/config/assetschannel.tx
 
 echo "五、节点加入通道"

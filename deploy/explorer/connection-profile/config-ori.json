@@ -1,7 +1,7 @@
 {
   "network-configs": {
     "test-network": {
-      "name": "Fishery Network",
+      "name": "Blockchain Real Estate Network",
       "profile": "./connection-profile/network.json"
     }
   },
