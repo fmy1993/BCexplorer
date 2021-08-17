@@ -88,6 +88,7 @@ services:
       - CORE_PEER_ID=peer1.org1.blockchainrealestate.com
       - CORE_PEER_LOCALMSPID=Org1MSP
       - CORE_PEER_ADDRESS=peer1.org1.blockchainrealestate.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.blockchainrealestate.com:7051
     ports:
       - 37051:7051
       - 37053:7053
@@ -107,6 +108,8 @@ services:
       - CORE_PEER_ID=peer0.org2.blockchainrealestate.com
       - CORE_PEER_LOCALMSPID=Org2MSP
       - CORE_PEER_ADDRESS=peer0.org2.blockchainrealestate.com:7051
+      # 必须配置这个环境变量才能被区块链浏览器读到
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.blockchainrealestate.com:7051
     ports:
       - 47051:7051
       - 47053:7053
@@ -126,6 +129,7 @@ services:
       - CORE_PEER_ID=peer1.org2.blockchainrealestate.com
       - CORE_PEER_LOCALMSPID=Org2MSP
       - CORE_PEER_ADDRESS=peer1.org2.blockchainrealestate.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org2.blockchainrealestate.com:7051
     ports:
       - 57051:7051
       - 57053:7053
