@@ -50,7 +50,7 @@ services:
       - ../crypto-config:/tmp/crypto
       - walletstore:/opt/explorer/wallet
     ports:
-      - 8080:8080
+      - 9507:8080
     depends_on:
       explorerdb.blockchainrealestate.com:
         condition: service_healthy
