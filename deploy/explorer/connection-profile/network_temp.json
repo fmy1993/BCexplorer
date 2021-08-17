@@ -21,7 +21,9 @@
   "channels": {
     "assetschannel": {
       "peers": {
-        "peer0.org1.blockchainrealestate.com": {}
+        "peer0.org0.blockchainrealestate.com": {},
+        "peer0.org1.blockchainrealestate.com": {},
+        "peer0.org2.blockchainrealestate.com": {}
       }
     }
   },
@@ -29,13 +31,35 @@
     "Org1MSP": {
       "mspid": "Org1MSP",
       "adminPrivateKey": {
-        "path": "/tmp/crypto/peerOrganizations/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp/keystore/priv_sk"
+        "path": "/tmp/crypto/peerOrganizations/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp/keystore/priv_sk_org1"
       },
       "peers": [
         "peer0.org1.blockchainrealestate.com"
       ],
       "signedCert": {
         "path": "/tmp/crypto/peerOrganizations/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp/signcerts/Admin@org1.blockchainrealestate.com-cert.pem"
+      }
+    },"Org2MSP": {
+      "mspid": "Org2MSP",
+      "adminPrivateKey": {
+        "path": "/tmp/crypto/peerOrganizations/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp/keystore/priv_sk_org2"
+      },
+      "peers": [
+        "peer0.org2.blockchainrealestate.com"
+      ],
+      "signedCert": {
+        "path": "/tmp/crypto/peerOrganizations/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp/signcerts/Admin@org2.blockchainrealestate.com-cert.pem"
+      }
+    },"Org0MSP": {
+      "mspid": "Org0MSP",
+      "adminPrivateKey": {
+        "path": "/tmp/crypto/peerOrganizations/org0.blockchainrealestate.com/users/Admin@org0.blockchainrealestate.com/msp/keystore/priv_sk_org0"
+      },
+      "peers": [
+        "peer0.org0.blockchainrealestate.com"
+      ],
+      "signedCert": {
+        "path": "/tmp/crypto/peerOrganizations/org0.blockchainrealestate.com/users/Admin@org0.blockchainrealestate.com/msp/signcerts/Admin@org0.blockchainrealestate.com-cert.pem"
       }
     }
   },
@@ -45,6 +69,17 @@
         "path": "/tmp/crypto/peerOrganizations/org1.blockchainrealestate.com/peers/peer0.org1.blockchainrealestate.com/tls/ca.crt"
       },
       "url": "grpc://peer0.org1.blockchainrealestate.com:7051"
+    },
+    "peer0.org2.blockchainrealestate.com": {
+      "tlsCACerts": {
+        "path": "/tmp/crypto/peerOrganizations/org2.blockchainrealestate.com/peers/peer0.org2.blockchainrealestate.com/tls/ca.crt"
+      },
+      "url": "grpc://peer0.org2.blockchainrealestate.com:7051"
+    },"peer0.org0.blockchainrealestate.com": {
+      "tlsCACerts": {
+        "path": "/tmp/crypto/peerOrganizations/org0.blockchainrealestate.com/peers/peer0.org0.blockchainrealestate.com/tls/ca.crt"
+      },
+      "url": "grpc://peer0.org0.blockchainrealestate.com:7051"
     }
   }
 }
