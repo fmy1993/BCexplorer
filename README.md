@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: fmy1993
+ * @Date: 2021-08-15 11:57:46
+ * @LastEditors: fmy1993
+ * @LastEditTime: 2021-08-25 21:21:48
+-->
 # 全新极速运行部署方式
 
 ---
@@ -55,13 +63,15 @@ Linux 或者 Mac，连接网络，要求安装了 Docker 和 Docker Compose
 ![image.png](https://cdn.nlark.com/yuque/0/2021/png/1077776/1619501464096-a543fd23-153e-4ddc-bd56-472698966940.png#align=left&display=inline&height=159&margin=%5Bobject%20Object%5D&name=image.png&originHeight=317&originWidth=1952&size=54818&status=done&style=none&width=976#id=vzis9&originHeight=317&originWidth=1952&originalType=binary&ratio=1&status=done&style=none)
 ![image.png](https://cdn.nlark.com/yuque/0/2021/png/1077776/1619501482450-7dc34559-6c39-4f8e-a7fe-177659517304.png#align=left&display=inline&height=698&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1396&originWidth=2361&size=367532&status=done&style=none&width=1180.5#id=vBRNT&originHeight=1396&originWidth=2361&originalType=binary&ratio=1&status=done&style=none)
 
-### 7、浏览器访问 [http://localhost:8000/web](http://localhost:8000/web)
+### 7、浏览器访问 [http://localhost:8000/web](http://localhost:8000/web)  端口改成了9507
 
 ![](https://cdn.nlark.com/yuque/0/2021/png/1077776/1619503481607-d6dd7048-77aa-4461-817c-2fcf7507cf9d.png#id=gsVRB&originHeight=1568&originWidth=2874&originalType=binary&ratio=1&status=done&style=none)
 
 ### 8、（可选）进入 `deploy/explorer` 目录，执行 `./start.sh` 启动区块链浏览器
 
 ![image.png](https://cdn.nlark.com/yuque/0/2021/png/1077776/1623386161368-d06f0e91-a2be-43bf-83bc-d6921bc0dc3f.png#clientId=u7065799c-2510-4&from=paste&height=698&id=u5217fa8e&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1396&originWidth=2353&originalType=binary&ratio=2&size=177974&status=done&style=none&taskId=u842d45fc-0803-45be-ab6a-fc450905600&width=1176.5)
+
+### 浏览器访问 [http://localhost:8080](http://localhost:8080)，用户名 admin，密码 123456
 
 ### 浏览器访问 [http://localhost:8080](http://localhost:8080)，用户名 admin，密码 123456
 
