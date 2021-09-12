@@ -1,9 +1,10 @@
 version: '2'
 services:
 
+  # 在1.4.3  msp文件的结构发生了变化，因此最好使用1.4.3以后的版本
   orderer.blockchainrealestate.com:
     container_name: orderer.blockchainrealestate.com
-    image: hyperledger/fabric-orderer:1.4.2
+    image: hyperledger/fabric-orderer:1.4.4
     environment:
       - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0 # 服务暴露地址
@@ -141,11 +142,21 @@ services:
 
   cli:
     container_name: cli
-    image: hyperledger/fabric-tools:1.4.2
+    image: hyperledger/fabric-tools:1.4.4
     tty: true
     environment:
       - GOPATH=/opt/gopath
-      - CORE_LOGGING_LEVEL=DEBUG
+      # CORE_LOGGING_LEVEL is no longer supported, please use the FABRIC_LOGGING_SPEC environment variable
+      # - CORE_LOGGING_LEVEL=DEBUG fmy modified in 2021.09.12
+      # - FABRIC_LOGGING_SPEC=DEBUG
+
+      # Default logging levels are specified here.
+
+      # Valid logging levels are case-insensitive strings chosen from
+
+      #     CRITICAL | ERROR | WARNING | NOTICE | INFO | DEBUG
+      - FABRIC_LOGGING_SPEC=INFO
+      # - FABRIC_LOGGING_SPEC=DEBUG   # 详细查询问题就使用debug
       - CORE_PEER_ID=cli
       # 测试修复区块链浏览器不显示的问题，改为peer0.org0进行测试
       - CORE_PEER_ADDRESS=peer0.org1.blockchainrealestate.com:7051
@@ -155,7 +166,8 @@ services:
       # 节点加入环境变量的路径问题主要就是这个(这个路径必须根据挂载路径做修改)
       # - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/users/Admin@org1.blockchainrealestate.com/msp
       
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp
+      # 不在cli容器中挂载 msp路径，在脚本中动态替换
+      # - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp
       # - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org0.blockchainrealestate.com/users/Admin@org0.blockchainrealestate.com/msp
       # 进入容器显示的默认路径
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/
