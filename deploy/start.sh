@@ -5,7 +5,7 @@
  # @Author: fmy1993
  # @Date: 2021-08-15 11:57:49
  # @LastEditors: fmy1993
- # @LastEditTime: 2021-09-12 11:12:44
+ # @LastEditTime: 2021-09-13 10:55:58
 ### 
 
 
@@ -50,11 +50,21 @@ echo "三、生成系统的区块文件 以及 channel通道的TX文件(创建�
 # 这里顺序错了
 # configtxgen -profile TwoOrgChannel -outputCreateChannelTx ./config/assetschannel.tx -channelID assetschannel
 
-# Generate System Genesis block
+# Generate System Genesis block /deploy/fabric/linux/config/configtx.yaml
+echo "#######    blcok文件生成  ##########"
 configtxgen -profile OneOrgOrdererGenesis -configPath . -channelID $SYS_CHANNEL -outputBlock ./config/genesis.block
-
-# Generate channel configuration block
+echo "#######    tx文件生成  ##########"
+# Generate channel configuration block /deploy/fabric/linux/config/configtx.yaml
 configtxgen -profile TwoOrgChannel -configPath . -outputCreateChannelTx ./config/assetschannel.tx -channelID $CHANNEL_NAME
+
+echo "#######    Generating anchor peer update for Org0MSP  ##########"   # 更换-c到-outputAnchorPeersUpdate 
+configtxgen -profile TwoOrgChannel -configPath . -outputAnchorPeersUpdate ./config/Org0MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org0MSP
+
+echo "#######    Generating anchor peer update for Org1MSP  ##########"   # 更换-c到-outputAnchorPeersUpdate 
+configtxgen -profile TwoOrgChannel -configPath . -outputAnchorPeersUpdate ./config/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
+
+echo "#######    Generating anchor peer update for Org2MSP  ##########"
+configtxgen -profile TwoOrgChannel -configPath . -outputAnchorPeersUpdate ./config/Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org2MSP
 
 echo "区块链 ： 启动"
 docker-compose up -d
@@ -83,25 +93,37 @@ echo "四、创建通道"
 #     cli peer channel join -b assetschannel.block
 
 echo "========== Creating Channel=========="
-
+echo "========== Creating Channel-将order节点加入通道中更恰当=========="
+# echo ""
+# 将order节点加入通道中更恰当
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
     cli peer channel create -o orderer.blockchainrealestate.com:7050 \
     -c assetschannel -f /etc/hyperledger/config/assetschannel.tx # --tls \
     # --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
 
+
+
+
+
+
+
+
+# docker exec cli peer channel join -b assetschannel.block
+
+
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
-    -e "/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
-    -e "CORE_PEER_ADDRESS=peer0.org1.blockchainrealestate.com:7051" \
+    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
+    -e "CORE_PEER_ADDRESS=peer0.org1.blockchainrealestate.com:9051" \
     cli peer channel join -b assetschannel.block
 
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
-    -e "/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
+    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
     peer1.org1.blockchainrealestate.com peer channel fetch newest assetschannel.block \
     -c assetschannel --orderer orderer.blockchainrealestate.com:7050 # --tls \
     # --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
 
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
-    -e "/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
+    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
     peer1.org1.blockchainrealestate.com peer channel join -b assetschannel.block
 
 docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
@@ -124,25 +146,25 @@ docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
     peer1.org2.blockchainrealestate.com peer channel join -b assetschannel.block
 
-echo "========== finish Creating Channel=========="
+echo "========== Channel Creation completed =========="
 
-echo "五、节点加入通道"
+# echo "五、节点加入通道"
 # echo "peer0组织1加入通道"
-docker exec cli peer channel join -b assetschannel.block
+# docker exec cli peer channel join -b assetschannel.block
 
 
 
 
 # 多加入几个节点，直接硬编码
 # docker exec cli /bin/bash -c CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp
-# docker exec cli /bin/bash -c CORE_PEER_ADDRESS=peer0.org2.blockchainrealestate.com:7051
+# docker exec cli /bin/bash -c CORE_PEER_ADDRESS=peer0.org2.blockchainrealestate.com:9051
 # docker exec cli /bin/bash -c CORE_PEER_LOCALMSPID="Org2MSP"
 
 # docker exec cli  peer channel join -b assetschannel.block
 
 # echo "peer0组织3加入通道"
 # docker exec cli /bin/bash -c CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org0.blockchainrealestate.com/users/Admin@org0.blockchainrealestate.com/msp
-# docker exec cli /bin/bash -c CORE_PEER_ADDRESS=peer0.org0.blockchainrealestate.com:7051
+# docker exec cli /bin/bash -c CORE_PEER_ADDRESS=peer0.org0.blockchainrealestate.com:9051
 # docker exec cli /bin/bash -c CORE_PEER_LOCALMSPID="Org0MSP"
 
 # docker exec cli  peer channel join -b assetschannel.block
@@ -161,11 +183,11 @@ docker exec cli peer chaincode install -n blockchain-real-estate -v 1.0.0 -l gol
 #-C 是通道，在fabric的世界，一个通道就是一条不同的链，composer并没有很多提现这点，composer提现channel也就在于多组织时候的数据隔离和沟通使用
 #-c 为传参，传入init参数
 echo "七、实例化链码"
-if [[ "$(docker images -q hyperledger/fabric-ccenv:1.4 2> /dev/null)" == "" ]]; then
-  docker pull hyperledger/fabric-ccenv:1.4
+if [[ "$(docker images -q hyperledger/fabric-ccenv:1.4.4 2> /dev/null)" == "" ]]; then
+  docker pull hyperledger/fabric-ccenv:1.4.4
 fi
 if [[ "$(docker images -q hyperledger/fabric-ccenv:latest 2> /dev/null)" == "" ]]; then
-  docker tag hyperledger/fabric-ccenv:1.4 hyperledger/fabric-ccenv:latest
+  docker tag hyperledger/fabric-ccenv:1.4.4 hyperledger/fabric-ccenv:latest
 fi
 docker exec cli peer chaincode instantiate -o orderer.blockchainrealestate.com:7050 -C assetschannel -n blockchain-real-estate -l golang -v 1.0.0 -c '{"Args":["init"]}'
 

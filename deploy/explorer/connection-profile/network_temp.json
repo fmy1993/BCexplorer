@@ -68,13 +68,13 @@
       "tlsCACerts": {
         "path": "/tmp/crypto/peerOrganizations/org1.blockchainrealestate.com/peers/peer0.org1.blockchainrealestate.com/tls/ca.crt"
       },
-      "url": "grpc://peer0.org1.blockchainrealestate.com:7051"
+      "url": "grpc://peer0.org1.blockchainrealestate.com:9051"
     },
     "peer0.org2.blockchainrealestate.com": {
       "tlsCACerts": {
         "path": "/tmp/crypto/peerOrganizations/org2.blockchainrealestate.com/peers/peer0.org2.blockchainrealestate.com/tls/ca.crt"
       },
-      "url": "grpc://peer0.org2.blockchainrealestate.com:7051"
+      "url": "grpc://peer0.org2.blockchainrealestate.com:11051"
     },"peer0.org0.blockchainrealestate.com": {
       "tlsCACerts": {
         "path": "/tmp/crypto/peerOrganizations/org0.blockchainrealestate.com/peers/peer0.org0.blockchainrealestate.com/tls/ca.crt"

@@ -1,4 +1,4 @@
-# "OrdererOrgs" - 定义管理排序节点的组织
+# "OrdererOrgs" - 定义管理排序节点的组织,名字会决定路径
 OrdererOrgs:
   - Name: Orderer # 组织的名字
     Domain: blockchainrealestate.com # 域名，整个节点域名需要是hostname+domain
@@ -10,6 +10,7 @@ PeerOrgs:
   # Org0 组织0
   - Name: Org0
     Domain: org0.blockchainrealestate.com
+    EnableNodeOUs: true # 不知道有什么用,在admin文件夹会生车那个一个标记秘钥的配置文件？
     Template: # 使用模板定义peer节点
       Count: 2 # peer0.org0.blockchainrealestate.com & peer1.org0.blockchainrealestate.com
       # Start: 5 # index计数的起始
@@ -20,6 +21,7 @@ PeerOrgs:
   # Org1 组织1
   - Name: Org1
     Domain: org1.blockchainrealestate.com
+    EnableNodeOUs: true
     Template: # 使用模版定义1个节点，从2开始
       Count: 2
     Users:
@@ -28,6 +30,7 @@ PeerOrgs:
   # Org2 组织2
   - Name: Org2
     Domain: org2.blockchainrealestate.com
+    EnableNodeOUs: true
     Template: # 使用模版定义1个节点，从2开始
       Count: 2
     Users:

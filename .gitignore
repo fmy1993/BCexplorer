@@ -1,2 +1,9 @@
 .vscode
 .idea
+deploy/fabric/linux/bin/configtxgen
+deploy/fabric/linux/bin/configtxlator
+deploy/fabric/linux/bin/cryptogen
+deploy/fabric/linux/bin/discover
+deploy/fabric/linux/bin/idemixgen
+deploy/fabric/linux/bin/orderer
+deploy/fabric/linux/bin/peer
