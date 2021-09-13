@@ -19,8 +19,8 @@ var doc = `{
         "description": "{{.Description}}",
         "title": "{{.Title}}",
         "contact": {
-            "name": "togettoyou",
-            "email": "zoujh99@qq.com"
+            "name": "fmy",
+            "email": "1390167880@qq.com"
         },
         "license": {
             "name": "Apache 2.0",
@@ -31,6 +31,70 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/v1/addCrop": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "增加上链数据",
+                "parameters": [
+                    {
+                        "description": "crop",
+                        "name": "Crop",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.Crop"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/checkDataBlockHeight": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "检查查询的区块高度是否符合要求",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "区块高度",
+                        "name": "datablockheight",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/createDonating": {
             "post": {
                 "produces": [
@@ -163,6 +227,81 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/getBlockInfo": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "输出blockInfo",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/getBlockInfoByBlockHeight": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "输出blockInfo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "区块高度",
+                        "name": "height",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/getMaxDataBlockHeight": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "输出最大数据区块高度",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/hello": {
             "get": {
                 "produces": [
@@ -199,6 +338,39 @@ var doc = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/v1.AccountRequestBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/queryCrop": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "查询上链信息,cropid=\"datatype\"+\"-\"+\"id\" eg:\"test-711\"",
+                "parameters": [
+                    {
+                        "description": "crop",
+                        "name": "crop",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.CropRequestBody"
                         }
                     }
                 ],
@@ -383,6 +555,39 @@ var doc = `{
                 }
             }
         },
+        "/api/v1/updateCrop": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "删除账本数据，保持id和datatype两个字段的值和上链时一样 eg:id:711,datatype:test",
+                "parameters": [
+                    {
+                        "description": "crop",
+                        "name": "Crop",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.Crop"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/app.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/updateDonating": {
             "post": {
                 "produces": [
@@ -480,6 +685,40 @@ var doc = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/v1.AccountIdBody"
+                    }
+                }
+            }
+        },
+        "v1.Crop": {
+            "type": "object",
+            "properties": {
+                "datatype": {
+                    "description": "add column here",
+                    "type": "string"
+                },
+                "hashinfo": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.CropIdBody": {
+            "type": "object",
+            "properties": {
+                "cropid": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.CropRequestBody": {
+            "type": "object",
+            "properties": {
+                "args": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/v1.CropIdBody"
                     }
                 }
             }
@@ -663,8 +902,8 @@ var SwaggerInfo = swaggerInfo{
 	Host:        "",
 	BasePath:    "",
 	Schemes:     []string{},
-	Title:       "基于区块链技术的房地产交易系统api文档",
-	Description: "基于区块链技术的房地产交易系统api文档",
+	Title:       "基于区块链技术的农产品溯源系统api文档",
+	Description: "基于区块链技术的农产品溯源系统api文档",
 }
 
 type s struct{}

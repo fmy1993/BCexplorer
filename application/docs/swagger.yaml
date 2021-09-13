@@ -20,6 +20,28 @@ definitions:
           $ref: '#/definitions/v1.AccountIdBody'
         type: array
     type: object
+  v1.Crop:
+    properties:
+      datatype:
+        description: add column here
+        type: string
+      hashinfo:
+        type: string
+      id:
+        type: string
+    type: object
+  v1.CropIdBody:
+    properties:
+      cropid:
+        type: string
+    type: object
+  v1.CropRequestBody:
+    properties:
+      args:
+        items:
+          $ref: '#/definitions/v1.CropIdBody'
+        type: array
+    type: object
   v1.DonatingListQueryByGranteeRequestBody:
     properties:
       grantee:
@@ -134,15 +156,56 @@ definitions:
     type: object
 info:
   contact:
-    email: zoujh99@qq.com
-    name: togettoyou
-  description: 基于区块链技术的房地产交易系统api文档
+    email: 1390167880@qq.com
+    name: fmy
+  description: 基于区块链技术的农产品溯源系统api文档
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  title: 基于区块链技术的房地产交易系统api文档
+  title: 基于区块链技术的农产品溯源系统api文档
   version: "1.0"
 paths:
+  /api/v1/addCrop:
+    post:
+      parameters:
+      - description: crop
+        in: body
+        name: Crop
+        required: true
+        schema:
+          $ref: '#/definitions/v1.Crop'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 增加上链数据
+  /api/v1/checkDataBlockHeight:
+    get:
+      parameters:
+      - description: 区块高度
+        in: query
+        name: datablockheight
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 检查查询的区块高度是否符合要求
   /api/v1/createDonating:
     post:
       parameters:
@@ -227,6 +290,54 @@ paths:
           schema:
             $ref: '#/definitions/app.Response'
       summary: 买家购买
+  /api/v1/getBlockInfo:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 输出blockInfo
+  /api/v1/getBlockInfoByBlockHeight:
+    get:
+      parameters:
+      - description: 区块高度
+        in: query
+        name: height
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 输出blockInfo
+  /api/v1/getMaxDataBlockHeight:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 输出最大数据区块高度
   /api/v1/hello:
     get:
       produces:
@@ -262,6 +373,27 @@ paths:
           schema:
             $ref: '#/definitions/app.Response'
       summary: 获取账户信息
+  /api/v1/queryCrop:
+    post:
+      parameters:
+      - description: crop
+        in: body
+        name: crop
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CropRequestBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 查询上链信息,cropid="datatype"+"-"+"id" eg:"test-711"
   /api/v1/queryDonatingList:
     post:
       parameters:
@@ -367,6 +499,27 @@ paths:
           schema:
             $ref: '#/definitions/app.Response'
       summary: 根据参与销售人、买家(买家AccountId)查询销售(参与的)
+  /api/v1/updateCrop:
+    post:
+      parameters:
+      - description: crop
+        in: body
+        name: Crop
+        required: true
+        schema:
+          $ref: '#/definitions/v1.Crop'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/app.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/app.Response'
+      summary: 删除账本数据，保持id和datatype两个字段的值和上链时一样 eg:id:711,datatype:test
   /api/v1/updateDonating:
     post:
       parameters:

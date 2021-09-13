@@ -5,7 +5,7 @@
  # @Author: fmy1993
  # @Date: 2021-08-15 15:15:40
  # @LastEditors: fmy1993
- # @LastEditTime: 2021-08-15 20:01:42
+ # @LastEditTime: 2021-09-13 16:31:43
 ### 
 
 echo "运行单元测试，检查区块链网络是否连接成功，需要有go环境，若无可忽略"
@@ -30,13 +30,13 @@ if [[ `uname` == 'Linux' ]]; then
   # 这个命令构建了一个镜像
   # Dockerfile 是一个用来构建镜像的文本文件，文本内容包含了一条条构建镜像所需的指令和说明。
   # nginx:v3（镜像名称:镜像标签）最后的 . 代表本次执行的上下文路径 最后一个 . 是上下文路径
-  # docker build -f  Dockerfile.Linux -t fmy1993/BCexplorer-application:v1 .
-  docker build -f  Dockerfile.Linux -t togettoyou/blockchain-real-estate-application:v1 .
+  docker build -f  Dockerfile.Linux -t fmy1993/blockchain-explorer-application:v1 .
+  #docker build -f  Dockerfile.Linux -t togettoyou/blockchain-real-estate-application:v1 .
 fi
 
 echo "三、运行编译容器"
-# docker run -it -d --name blockchain-real-estate-application fmy1993/BCexplorer-application:v1
-docker run -it -d --name blockchain-real-estate-application togettoyou/blockchain-real-estate-application:v1
+docker run -it -d --name blockchain-real-estate-application fmy1993/blockchain-explorer-application:v1
+#docker run -it -d --name blockchain-real-estate-application togettoyou/blockchain-real-estate-application:v1
 
 echo "四、拷贝容器中编译后的二进制可执行文件"
 # 生成一个可执行文件 app
