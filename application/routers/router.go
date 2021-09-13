@@ -4,7 +4,7 @@
  * @Author: fmy1993
  * @Date: 2021-08-15 09:04:19
  * @LastEditors: fmy1993
- * @LastEditTime: 2021-08-15 09:24:19
+ * @LastEditTime: 2021-09-13 16:49:41
  */
 package routers
 
@@ -30,6 +30,11 @@ func InitRouter() *gin.Engine {
 	apiV1 := r.Group("/api/v1")
 	{
 		apiV1.GET("/hello", v1.Hello)
+		apiV1.GET("/getBlockInfo", v1.GetBlockInfo)
+		apiV1.GET("/getBlockInfoByBlockHeight", v1.GetBlockInfoByBlockHeight)
+		apiV1.GET("/getMaxDataBlockHeight", v1.GetMaxDataBlockHeight)
+		apiV1.GET("/checkDataBlockHeight", v1.CheckDataBlockHeight)
+		apiV1.POST("/queryCrop", v1.QueryCrop)
 		apiV1.POST("/queryAccountList", v1.QueryAccountList)
 		apiV1.POST("/createRealEstate", v1.CreateRealEstate)
 		apiV1.POST("/queryRealEstateList", v1.QueryRealEstateList)
