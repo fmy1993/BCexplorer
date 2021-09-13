@@ -5,10 +5,12 @@
  # @Author: fmy1993
  # @Date: 2021-08-15 11:57:49
  # @LastEditors: fmy1993
- # @LastEditTime: 2021-08-17 07:49:38
+ # @LastEditTime: 2021-09-12 11:12:44
 ### 
 
-# 根据需求保留，这里相当于使用fabric-samples_v1.4.7中的bin
+
+
+# 根据需求保留，这里相当于使用fabric-samples_v1.4.7中的bin,name其实也就是用的v1.4.7
 if [[ `uname` == 'Darwin' ]]; then
     echo "Mac OS"
     export PATH=${PWD}/fabric/mac/bin:${PWD}:$PATH
@@ -19,6 +21,8 @@ if [[ `uname` == 'Linux' ]]; then
     export PATH=${PWD}/fabric/linux/bin:${PWD}:$PATH
 fi
 
+CHANNEL_NAME="mychannel"
+
 echo "一、清理环境"
 mkdir -p config
 mkdir -p crypto-config
@@ -27,25 +31,106 @@ rm -rf crypto-config/*
 ./stop.sh
 echo "清理完毕"
 
-echo "二、生成证书和起始区块信息"
-cryptogen generate --config=./crypto-config.yaml
-configtxgen -profile OneOrgOrdererGenesis -outputBlock ./config/genesis.block
+echo "二、生成证书和起始区块信息" # --output 生成的证书可以指定路径
+
+# System channel
+SYS_CHANNEL="sys-channel"
+
+# channel name defaults to "mychannel"
+CHANNEL_NAME="assetschannel"
+
+echo $CHANNEL_NAME
+
+cryptogen generate --config=./crypto-config.yaml --output=./crypto-config/
+
+# configtxgen -profile OneOrgOrdererGenesis -outputBlock ./config/genesis.block
+
+
+echo "三、生成系统的区块文件 以及 channel通道的TX文件(创建创世交易)"
+# 这里顺序错了
+# configtxgen -profile TwoOrgChannel -outputCreateChannelTx ./config/assetschannel.tx -channelID assetschannel
+
+# Generate System Genesis block
+configtxgen -profile OneOrgOrdererGenesis -configPath . -channelID $SYS_CHANNEL -outputBlock ./config/genesis.block
+
+# Generate channel configuration block
+configtxgen -profile TwoOrgChannel -configPath . -outputCreateChannelTx ./config/assetschannel.tx -channelID $CHANNEL_NAME
 
 echo "区块链 ： 启动"
 docker-compose up -d
 echo "正在等待节点的启动完成，等待10秒"
 sleep 10
 
-echo "三、生成通道的TX文件(创建创世交易)"
-configtxgen -profile TwoOrgChannel -outputCreateChannelTx ./config/assetschannel.tx -channelID assetschannel
+# ./ccp-generate.sh 调用其他shell文件的例子
+# docker exec cli env 检查环境变量，其他容器类似
+# profile 是定义在对应配置文件中的一段 TwoOrgChannel，如果要修改网络结构，那么就从这里修改
+
 
 echo "四、创建通道"
-# 通道名是 -c 以参数名给出的，与tx文件本身的路径不同
-docker exec cli peer channel create -o orderer.blockchainrealestate.com:7050 -c assetschannel -f /etc/hyperledger/config/assetschannel.tx 
+# 通道名是 -c 以参数名给出的，与tx文件本身的路径不同，并且已经在上一步指定
+# -o 配置文件，注意这个是由配置文件中的hostname+domain两个字段组合来的
+# docker exec cli peer channel create -o orderer.blockchainrealestate.com:7050 -c assetschannel -f /etc/hyperledger/config/assetschannel.tx 
+
+# echo "========== Creating Channel=========="
+# docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
+#     cli peer channel create -o orderer.blockchainrealestate.com:7050 \
+#     -c assetschannel -f /etc/hyperledger/config/assetschannel.tx  # 暂时不配tls--tls \
+#     #--cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
+
+# docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
+#     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
+#     -e "CORE_PEER_ADDRESS=peer0.org1.blockchainrealestate.com:7051" \
+#     cli peer channel join -b assetschannel.block
+
+echo "========== Creating Channel=========="
+
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
+    cli peer channel create -o orderer.blockchainrealestate.com:7050 \
+    -c assetschannel -f /etc/hyperledger/config/assetschannel.tx # --tls \
+    # --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
+
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
+    -e "/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
+    -e "CORE_PEER_ADDRESS=peer0.org1.blockchainrealestate.com:7051" \
+    cli peer channel join -b assetschannel.block
+
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
+    -e "/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
+    peer1.org1.blockchainrealestate.com peer channel fetch newest assetschannel.block \
+    -c assetschannel --orderer orderer.blockchainrealestate.com:7050 # --tls \
+    # --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
+
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
+    -e "/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
+    peer1.org1.blockchainrealestate.com peer channel join -b assetschannel.block
+
+docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
+    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
+    peer0.org2.blockchainrealestate.com peer channel fetch newest assetschannel.block -c assetschannel \
+    --orderer orderer.blockchainrealestate.com:7050 # --tls \
+    # --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
+
+docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
+    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
+    peer0.org2.blockchainrealestate.com peer channel join -b assetschannel.block
+
+docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
+    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
+    peer1.org2.blockchainrealestate.com peer channel fetch newest assetschannel.block -c assetschannel \
+    --orderer orderer.blockchainrealestate.com:7050 # --tls \
+    # --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
+
+docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
+    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
+    peer1.org2.blockchainrealestate.com peer channel join -b assetschannel.block
+
+echo "========== finish Creating Channel=========="
 
 echo "五、节点加入通道"
 # echo "peer0组织1加入通道"
 docker exec cli peer channel join -b assetschannel.block
+
+
 
 
 # 多加入几个节点，直接硬编码

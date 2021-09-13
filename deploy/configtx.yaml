@@ -5,6 +5,17 @@ Organizations: # Organizations配置段用来定义组织机构实体，以便�
     Name: OrdererOrg # 组织的名字
     ID: OrdererMSP # 组织的MSPID
     MSPDir: crypto-config/ordererOrganizations/blockchainrealestate.com/msp #组织的证书相对位置（生成的crypto-config)
+    # Policies:
+    #     Readers:
+    #         Type: Signature
+    #         Rule: "OR('OrdererMSP.member')"
+    #     Writers:
+    #         Type: Signature
+    #         Rule: "OR('OrdererMSP.member')"
+    #     Admins:
+    #         Type: Signature
+    #         Rule: "OR('OrdererMSP.admin')"
+
 
   - &Org0
     Name: Org0MSP
@@ -18,9 +29,22 @@ Organizations: # Organizations配置段用来定义组织机构实体，以便�
     Name: Org1MSP
     ID: Org1MSP
     MSPDir: crypto-config/peerOrganizations/org1.blockchainrealestate.com/msp
+    Policies:
+        Readers:
+            Type: Signature
+            Rule: "OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')"
+        Writers:
+            Type: Signature
+            # Rule: "OR('Org1MSP.admin', 'Org1MSP.client')"
+            Rule: "OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')"
+        Admins:
+            Type: Signature
+            # Rule: "OR('Org1MSP.admin')"
+            Rule: "OR('Org1MSP.admin', 'Org1MSP.peer', 'Org1MSP.client')"
     AnchorPeers:
       - Host: peer0.org1.blockchainrealestate.com
-        Port: 7051
+        #Port: 7051
+        Port: 9051
 
   - &Org2
     Name: Org2MSP
@@ -28,7 +52,8 @@ Organizations: # Organizations配置段用来定义组织机构实体，以便�
     MSPDir: crypto-config/peerOrganizations/org2.blockchainrealestate.com/msp
     AnchorPeers:
       - Host: peer0.org2.blockchainrealestate.com
-        Port: 7051
+        #Port: 7051
+        Port: 11051
 
 Orderer: &OrdererDefaults
   # Orderer配置段用来定义要编码写入创世区块或通道交易的排序节点参数。

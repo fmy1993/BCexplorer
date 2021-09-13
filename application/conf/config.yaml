@@ -1,6 +1,6 @@
 version: 1.0.0
 
-# GO SDK使用的客户端部分。
+# GO SDK使用的客户端部分，如果要部署多个客户端，那么就要修改这个配置文件。
 client:
   # 这个应用程序是属于哪个组织的，这里就填那个组织的组织名
   organization: org1
@@ -9,7 +9,7 @@ client:
   logging:
     level: info
 
-  # MSP证书的根路径
+  # MSP证书的根路径，节点没有msp证书进不了网络
   cryptoconfig:
     path: ./../deploy/crypto-config
 

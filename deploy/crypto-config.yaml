@@ -1,7 +1,7 @@
 # "OrdererOrgs" - 定义管理排序节点的组织
 OrdererOrgs:
   - Name: Orderer # 组织的名字
-    Domain: blockchainrealestate.com # 域名
+    Domain: blockchainrealestate.com # 域名，整个节点域名需要是hostname+domain
     Specs: # 定义组织的节点信息
       - Hostname: orderer # 单个orderer(solo)，节点域名：orderer.blockchainrealestate.com
 

@@ -9,7 +9,7 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/providers/fab"
 	"github.com/hyperledger/fabric-sdk-go/pkg/core/config"
 	"github.com/hyperledger/fabric-sdk-go/pkg/fabsdk"
-	//"github.com/hyperledger/fabric/protos/common"
+	//"github.com/hyperledger/fabric/protos/common" ,注意不要倒错了包
 )
 
 // 配置信息
