@@ -23,7 +23,6 @@ services:
     volumes:
       - ./config/genesis.block:/etc/hyperledger/config/genesis.block
       - ./crypto-config/ordererOrganizations/blockchainrealestate.com/orderers/orderer.blockchainrealestate.com/:/etc/hyperledger/orderer
-  
 
   peer0.org0.blockchainrealestate.com:
     extends:
@@ -195,4 +194,3 @@ services:
       # 这里只挂载了一个节点的MSP，为了能加入其他节点，修改挂载路径
       # - ./crypto-config/peerOrganizations/org1.blockchainrealestate.com/:/etc/hyperledger/peer
       - ./crypto-config/peerOrganizations/:/etc/hyperledger/peer
-      - ./crypto-config/ordererOrganizations/:/etc/hyperledger/order

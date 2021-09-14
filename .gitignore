@@ -7,3 +7,4 @@ deploy/fabric/linux/bin/discover
 deploy/fabric/linux/bin/idemixgen
 deploy/fabric/linux/bin/orderer
 deploy/fabric/linux/bin/peer
+deploy/benchmarks/

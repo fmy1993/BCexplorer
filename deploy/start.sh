@@ -5,7 +5,7 @@
  # @Author: fmy1993
  # @Date: 2021-08-15 11:57:49
  # @LastEditors: fmy1993
- # @LastEditTime: 2021-09-13 10:55:58
+ # @LastEditTime: 2021-09-14 21:55:37
 ### 
 
 
@@ -98,53 +98,50 @@ echo "========== Creating Channel-将order节点加入通道中更恰当========
 # 将order节点加入通道中更恰当
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
     cli peer channel create -o orderer.blockchainrealestate.com:7050 \
-    -c assetschannel -f /etc/hyperledger/config/assetschannel.tx # --tls \
-    # --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
-
-
-
-
-
-
+    -c assetschannel -f /etc/hyperledger/config/assetschannel.tx #--tls \
+    #--cafile /etc/hyperledger/order/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
 
 
 # docker exec cli peer channel join -b assetschannel.block
 
-
+echo "========== peer0org1 加入通道=========="
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
     -e "CORE_PEER_ADDRESS=peer0.org1.blockchainrealestate.com:9051" \
     cli peer channel join -b assetschannel.block
 
+# docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
+#     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
+#     peer1.org1.blockchainrealestate.com peer channel fetch newest assetschannel.block \
+#     -c assetschannel --orderer orderer.blockchainrealestate.com:7050 # --tls \
+    # --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
+echo "========== peer1org1 加入通道=========="
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
-    peer1.org1.blockchainrealestate.com peer channel fetch newest assetschannel.block \
-    -c assetschannel --orderer orderer.blockchainrealestate.com:7050 # --tls \
+    -e "CORE_PEER_ADDRESS=peer1.org1.blockchainrealestate.com:10051" \
+    cli peer channel join -b assetschannel.block
+
+# docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
+#     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
+#     peer0.org2.blockchainrealestate.com peer channel fetch newest assetschannel.block -c assetschannel \
+#     --orderer orderer.blockchainrealestate.com:7050 # --tls \
     # --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
-
-docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
-    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org1.blockchainrealestate.com/users/Admin@org1.blockchainrealestate.com/msp" \
-    peer1.org1.blockchainrealestate.com peer channel join -b assetschannel.block
-
+echo "========== peer0org2 加入通道=========="
 docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
-    peer0.org2.blockchainrealestate.com peer channel fetch newest assetschannel.block -c assetschannel \
-    --orderer orderer.blockchainrealestate.com:7050 # --tls \
+    -e "CORE_PEER_ADDRESS=peer0.org2.blockchainrealestate.com:11051" \
+    cli peer channel join -b assetschannel.block
+
+# docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
+#     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
+#     peer1.org2.blockchainrealestate.com peer channel fetch newest assetschannel.block -c assetschannel \
+#     --orderer orderer.blockchainrealestate.com:7050 # --tls \
     # --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
-
+echo "========== peer1org2 加入通道=========="
 docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
-    peer0.org2.blockchainrealestate.com peer channel join -b assetschannel.block
-
-docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
-    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
-    peer1.org2.blockchainrealestate.com peer channel fetch newest assetschannel.block -c assetschannel \
-    --orderer orderer.blockchainrealestate.com:7050 # --tls \
-    # --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
-
-docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
-    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
-    peer1.org2.blockchainrealestate.com peer channel join -b assetschannel.block
+    -e "CORE_PEER_ADDRESS=peer1.org2.blockchainrealestate.com:12051" \
+    cli peer channel join -b assetschannel.block
 
 echo "========== Channel Creation completed =========="
 
@@ -176,7 +173,29 @@ echo "========== Channel Creation completed =========="
 # -v 就是版本号，就是composer的bna版本
 # -p 是目录，目录是基于cli这个docker里面的$GOPATH相对的
 echo "六、链码安装"
+
+export CHANNEL_NAME=assetschannel
+export CC_NAME=blockchain-real-estate
+export CC_PATH=github.com/fmy1993/BCexplorer/chaincode/blockchain-real-estate
+export CC_VERSION=1.0.0
+
+
 docker exec cli peer chaincode install -n blockchain-real-estate -v 1.0.0 -l golang -p github.com/fmy1993/BCexplorer/chaincode/blockchain-real-estate
+
+# echo "========== Install Chaincode Using CLI on Peer0 Org0 =========="
+# docker exec -e "CORE_PEER_LOCALMSPID=Org0MSP" -e "export CORE_PEER_ADDRESS=peer0.Org0.blockchainrealestate.com:7051" \
+#     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/Org0.blockchainrealestate.com/users/Admin@Org0.blockchainrealestate.com/msp" \
+#     -e "CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/channel/crypto-config/peerOrganizations/Org0.blockchainrealestate.com/peers/peer0.Org0.blockchainrealestate.com/tls/ca.crt" \
+#     cli peer chaincode install -n $CC_NAME -v $CC_VERSION -p $CC_PATH
+
+
+
+echo "========== Install Chaincode Using CLI on Peer0 Org2 =========="
+docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" -e "CORE_PEER_ADDRESS=peer0.org2.blockchainrealestate.com:11051" \
+    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
+    -e "CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/peer/org2.blockchainrealestate.com/peers/peer0.org2.blockchainrealestate.com/tls/ca.crt" \
+    cli peer chaincode install -n $CC_NAME"ORG2" -v $CC_VERSION -p $CC_PATH
+
 
 #-n 对应前文安装链码的名字 其实就是composer network start bna名字
 #-v 为版本号，相当于composer network start bna名字@版本号
@@ -189,7 +208,16 @@ fi
 if [[ "$(docker images -q hyperledger/fabric-ccenv:latest 2> /dev/null)" == "" ]]; then
   docker tag hyperledger/fabric-ccenv:1.4.4 hyperledger/fabric-ccenv:latest
 fi
+echo "========== Instantiate Chaincode on peer0 Org1 =========="
 docker exec cli peer chaincode instantiate -o orderer.blockchainrealestate.com:7050 -C assetschannel -n blockchain-real-estate -l golang -v 1.0.0 -c '{"Args":["init"]}'
+
+echo "========== Instantiate Chaincode on peer0 Org2 =========="
+docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
+    cli peer chaincode instantiate -o orderer.blockchainrealestate.com:7050 \
+    -C mychannel -n $CC_NAME -v $CC_VERSION -c '{"Args":["init""]}' -P "OR ('Org1MSP.member', 'Org2MSP.member')" \
+    --tls --cafile /etc/hyperledger/order/blockchainrealestate.com/tlsca/tlsca.blockchainrealestate.com-cert.pem
+
+
 
 echo "正在等待链码实例化完成，等待5秒"
 sleep 5
