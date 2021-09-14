@@ -5,7 +5,7 @@
  # @Author: fmy1993
  # @Date: 2021-08-15 11:57:49
  # @LastEditors: fmy1993
- # @LastEditTime: 2021-09-14 21:55:37
+ # @LastEditTime: 2021-09-15 07:43:39
 ### 
 
 
@@ -179,7 +179,7 @@ export CC_NAME=blockchain-real-estate
 export CC_PATH=github.com/fmy1993/BCexplorer/chaincode/blockchain-real-estate
 export CC_VERSION=1.0.0
 
-
+echo "========== Install Chaincode Using CLI on Peer0 Org1 =========="
 docker exec cli peer chaincode install -n blockchain-real-estate -v 1.0.0 -l golang -p github.com/fmy1993/BCexplorer/chaincode/blockchain-real-estate
 
 # echo "========== Install Chaincode Using CLI on Peer0 Org0 =========="
@@ -209,7 +209,7 @@ if [[ "$(docker images -q hyperledger/fabric-ccenv:latest 2> /dev/null)" == "" ]
   docker tag hyperledger/fabric-ccenv:1.4.4 hyperledger/fabric-ccenv:latest
 fi
 echo "========== Instantiate Chaincode on peer0 Org1 =========="
-docker exec cli peer chaincode instantiate -o orderer.blockchainrealestate.com:7050 -C assetschannel -n blockchain-real-estate -l golang -v 1.0.0 -c '{"Args":["init"]}'
+docker exec cli peer chaincode instantiate -o orderer.blockchainrealestate.com:7050 -C assetschannel -n blockchain-real-estate -v 1.0.0 -c '{"Args":["init"]}' #-l golang 
 
 echo "========== Instantiate Chaincode on peer0 Org2 =========="
 docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/peer/org2.blockchainrealestate.com/users/Admin@org2.blockchainrealestate.com/msp" \
