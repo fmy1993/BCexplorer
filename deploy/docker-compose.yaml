@@ -36,7 +36,9 @@ services:
       - CORE_PEER_LOCALMSPID=Org0MSP
       - CORE_PEER_ADDRESS=peer0.org0.blockchainrealestate.com:7051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org0.blockchainrealestate.com:7051
+      # gossip 相关，区块链浏览器需要正确配置这两个变量
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org0.blockchainrealestate.com:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org0.blockchainrealestate.com:7051
     ports:
       - 7051:7051 # grpc服务端口
       #- 7053:7053 # eventhub端口
@@ -58,6 +60,7 @@ services:
       - CORE_PEER_LOCALMSPID=Org0MSP
       - CORE_PEER_ADDRESS=peer1.org0.blockchainrealestate.com:8051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org0.blockchainrealestate.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org0.blockchainrealestate.com:8051
     ports:
       - 17051:8051
@@ -80,6 +83,7 @@ services:
       - CORE_PEER_ADDRESS=peer0.org1.blockchainrealestate.com:9051
       # 在安装和实例化链码过程中节点需要相互通信，必须正确加上这个环境变量
       - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org1.blockchainrealestate.com:10051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.blockchainrealestate.com:9051
     ports:
       - 27051:9051
@@ -101,6 +105,7 @@ services:
       - CORE_PEER_LOCALMSPID=Org1MSP
       - CORE_PEER_ADDRESS=peer1.org1.blockchainrealestate.com:10051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.blockchainrealestate.com:9051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.blockchainrealestate.com:10051
     ports:
       - 37051:10051
@@ -123,7 +128,8 @@ services:
       - CORE_PEER_ADDRESS=peer0.org2.blockchainrealestate.com:11051
       # 监听这个端口
       - CORE_PEER_LISTENADDRESS=0.0.0.0:11051
-      # 必须配置这个环境变量才能被区块链浏览器读到
+      # 必须配置2个环境变量才能被区块链浏览器读到
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org2.blockchainrealestate.com:12051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.blockchainrealestate.com:11051
     ports:
       - 47051:11051
@@ -145,6 +151,7 @@ services:
       - CORE_PEER_LISTENADDRESS=0.0.0.0:12051
       - CORE_PEER_LOCALMSPID=Org2MSP
       - CORE_PEER_ADDRESS=peer1.org2.blockchainrealestate.com:12051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.blockchainrealestate.com:11051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org2.blockchainrealestate.com:12051
     ports:
       - 57051:12051
